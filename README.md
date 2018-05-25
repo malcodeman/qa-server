@@ -1,1 +1,1 @@
-# confessio-server
+# qa-internal server
