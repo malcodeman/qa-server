@@ -3,7 +3,10 @@ import sequelize from "../connection.mjs";
 
 export async function create(req, res, next) {
   try {
-    const question = await Question.create({ content: req.body.content });
+    const question = await Question.create({
+      title: req.body.title,
+      body: req.body.body
+    });
     res.status(200).send(question);
   } catch (error) {
     res.status(400).send(error);

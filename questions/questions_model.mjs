@@ -10,7 +10,7 @@ const Question = sequelize.define("question", {
       notEmpty: true
     }
   },
-  content: {
+  body: {
     type: Sequelize.TEXT,
     allowNull: false,
     validate: {
