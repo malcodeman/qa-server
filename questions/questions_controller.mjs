@@ -13,10 +13,20 @@ export async function create(req, res, next) {
   }
 }
 
-export async function get(req, res, next) {
+export async function getAll(req, res, next) {
   try {
     const questions = await Question.findAll();
     res.status(200).send(questions);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+}
+
+export async function getById(req, res, next) {
+  try {
+    const { id } = req.params;
+    const question = await Question.findById(id);
+    res.status(200).send(question);
   } catch (error) {
     res.status(400).send(error);
   }

@@ -1,10 +1,11 @@
 import express from "express";
 
-import { create, get } from "./questions_controller.mjs";
+import { create, getAll, getById } from "./questions_controller.mjs";
 
 const router = express.Router();
 
 router.post("/", create);
-router.get("/", get);
+router.get("/", getAll);
+router.get("/:id", getById);
 
 export default router;
