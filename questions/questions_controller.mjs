@@ -1,4 +1,5 @@
 import Question from "./questions_model.mjs";
+import Answer from "../answers/answers_model.mjs";
 import sequelize from "../connection.mjs";
 
 export async function create(req, res, next) {
@@ -25,8 +26,15 @@ export async function getAll(req, res, next) {
 export async function getById(req, res, next) {
   try {
     const { id } = req.params;
-    const question = await Question.findById(id);
-    res.status(200).send(question);
+    const question = await Question.findAll({
+      where: { id },
+      include: [
+        {
+          model: Answer
+        }
+      ]
+    });
+    res.status(200).send(question[0]);
   } catch (error) {
     res.status(400).send(error);
   }

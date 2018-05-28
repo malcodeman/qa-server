@@ -1,6 +1,7 @@
 import Sequelize from "sequelize";
 
 import sequelize from "../connection.mjs";
+import Answer from "../answers/answers_model.mjs";
 
 const Question = sequelize.define("question", {
   title: {
@@ -18,5 +19,7 @@ const Question = sequelize.define("question", {
     }
   }
 });
+
+Question.hasMany(Answer);
 
 export default Question;
