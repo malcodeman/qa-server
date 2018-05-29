@@ -2,7 +2,8 @@ import Sequelize from "sequelize";
 
 import sequelize from "../connection.mjs";
 import Answer from "../answers/answers_model.mjs";
-import Upvote from "../upvotes/upvotes_model.mjs";
+import Upvote from "../votes/upvotes_model.mjs";
+import Downvote from "../votes/downvotes_model.mjs";
 
 const Question = sequelize.define("question", {
   title: {
@@ -18,15 +19,11 @@ const Question = sequelize.define("question", {
     validate: {
       notEmpty: true
     }
-  },
-  num_answers: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-    defaultValue: 0
   }
 });
 
 Question.hasMany(Answer);
 Question.hasMany(Upvote);
+Question.hasMany(Downvote);
 
 export default Question;

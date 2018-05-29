@@ -1,6 +1,7 @@
 import Question from "./questions_model.mjs";
 import Answer from "../answers/answers_model.mjs";
-import Upvote from "../upvotes/upvotes_model.mjs";
+import Upvote from "../votes/upvotes_model.mjs";
+import Downvote from "../votes/downvotes_model.mjs";
 import sequelize from "../connection.mjs";
 
 export async function create(req, res, next) {
@@ -26,6 +27,17 @@ export async function createUpvote(req, res, next) {
   }
 }
 
+export async function createDownvote(req, res, next) {
+  try {
+    const downvote = await Downvote.create({
+      questionId: req.body.questionId
+    });
+    res.status(200).send(downvote);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+}
+
 export async function findAll(req, res, next) {
   try {
     const questions = await Question.findAll({
@@ -35,6 +47,9 @@ export async function findAll(req, res, next) {
         },
         {
           model: Upvote
+        },
+        {
+          model: Downvote
         }
       ]
     });
@@ -55,6 +70,9 @@ export async function findById(req, res, next) {
         },
         {
           model: Upvote
+        },
+        {
+          model: Downvote
         }
       ]
     });

@@ -5,7 +5,8 @@ import {
   findAll,
   findById,
   updateById,
-  createUpvote
+  createUpvote,
+  createDownvote
 } from "./questions_controller.mjs";
 
 const router = express.Router();
@@ -18,5 +19,6 @@ router.put("/:id", updateById);
 
 // Votes
 router.post("/:id/upvotes", createUpvote);
+router.post("/:id/downvotes", createDownvote);
 
 export default router;
