@@ -1,11 +1,22 @@
 import express from "express";
 
-import { create, getAll, getById } from "./questions_controller.mjs";
+import {
+  create,
+  findAll,
+  findById,
+  updateById,
+  createUpvote
+} from "./questions_controller.mjs";
 
 const router = express.Router();
 
+// Questions
 router.post("/", create);
-router.get("/", getAll);
-router.get("/:id", getById);
+router.get("/", findAll);
+router.get("/:id", findById);
+router.put("/:id", updateById);
+
+// Votes
+router.post("/:id/upvotes", createUpvote);
 
 export default router;
