@@ -9,7 +9,11 @@ import {
   createDownvote
 } from "./questions_controller.mjs";
 
+import { requireAuthentication } from "../auth/auth_middleware.mjs";
+
 const router = express.Router();
+
+router.use(requireAuthentication);
 
 // Questions
 router.post("/", create);

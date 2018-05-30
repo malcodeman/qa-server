@@ -5,7 +5,8 @@ export async function create(req, res, next) {
   try {
     const answer = await Answer.create({
       body: req.body.body,
-      questionId: req.body.questionId
+      questionId: req.body.questionId,
+      userId: req.userId
     });
     res.status(200).send(answer);
   } catch (error) {

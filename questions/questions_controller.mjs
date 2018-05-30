@@ -2,13 +2,15 @@ import Question from "./questions_model.mjs";
 import Answer from "../answers/answers_model.mjs";
 import Upvote from "../votes/upvotes_model.mjs";
 import Downvote from "../votes/downvotes_model.mjs";
+import User from "../users/users_model.mjs";
 import sequelize from "../connection.mjs";
 
 export async function create(req, res, next) {
   try {
     const question = await Question.create({
       title: req.body.title,
-      body: req.body.body
+      body: req.body.body,
+      userId: req.userId
     });
     res.status(200).send(question);
   } catch (error) {
@@ -19,7 +21,8 @@ export async function create(req, res, next) {
 export async function createUpvote(req, res, next) {
   try {
     const upvote = await Upvote.create({
-      questionId: req.body.questionId
+      questionId: req.body.questionId,
+      userId: req.userId
     });
     res.status(200).send(upvote);
   } catch (error) {
@@ -30,7 +33,8 @@ export async function createUpvote(req, res, next) {
 export async function createDownvote(req, res, next) {
   try {
     const downvote = await Downvote.create({
-      questionId: req.body.questionId
+      questionId: req.body.questionId,
+      userId: req.userId
     });
     res.status(200).send(downvote);
   } catch (error) {
@@ -50,6 +54,9 @@ export async function findAll(req, res, next) {
         },
         {
           model: Downvote
+        },
+        {
+          model: User
         }
       ]
     });
@@ -73,6 +80,9 @@ export async function findById(req, res, next) {
         },
         {
           model: Downvote
+        },
+        {
+          model: User
         }
       ]
     });
