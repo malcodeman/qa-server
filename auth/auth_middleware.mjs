@@ -7,6 +7,6 @@ export function requireAuthentication(req, res, next) {
     req.userId = decoded.id;
     next();
   } catch (error) {
-    res.status(400).send(error);
+    res.status(401).send(error);
   }
 }
