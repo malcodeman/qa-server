@@ -45,6 +45,7 @@ export async function createDownvote(req, res, next) {
 export async function findAll(req, res, next) {
   try {
     const questions = await Question.findAll({
+      order: [["id", "DESC"]],
       include: [
         {
           model: Answer
