@@ -1,12 +1,18 @@
 import jwt from "jsonwebtoken";
+import Sequelize from "sequelize";
 
 import User from "../users/users_model.mjs";
 
+const Op = Sequelize.Op;
+
 export async function signup(req, res, next) {
   try {
+    const { email, name, username, password } = req.body;
     const user = await User.create({
-      email: req.body.email,
-      password: req.body.password
+      email,
+      name,
+      username,
+      password
     });
     const token = jwt.sign({ id: user.id }, "secret", {
       expiresIn: 86400
@@ -19,8 +25,12 @@ export async function signup(req, res, next) {
 
 export async function login(req, res, next) {
   try {
-    const user = await User.findOne({ where: { email: req.body.email } });
-    const password = req.body.password;
+    const { email, username, password } = req.body;
+    const user = await User.findOne({
+      where: {
+        [Op.or]: [{ email }, { username }]
+      }
+    });
     if (password === user.password) {
       const token = jwt.sign({ id: user.id }, "secret", {
         expiresIn: 86400
