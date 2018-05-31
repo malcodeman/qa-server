@@ -74,7 +74,8 @@ export async function findById(req, res, next) {
       where: { id },
       include: [
         {
-          model: Answer
+          model: Answer,
+          include: [User]
         },
         {
           model: Upvote

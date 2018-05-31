@@ -1,14 +1,17 @@
 import Answer from "./answers_model.mjs";
+import User from "../users/users_model.mjs";
 import sequelize from "../connection.mjs";
 
 export async function create(req, res, next) {
   try {
+    const { body, questionId } = req.body;
     const answer = await Answer.create({
-      body: req.body.body,
-      questionId: req.body.questionId,
+      body,
+      questionId,
       userId: req.userId
     });
-    res.status(200).send(answer);
+    const { id } = answer.dataValues;
+    res.status(200).send(await Answer.find({ where: { id }, include: [User] }));
   } catch (error) {
     res.status(400).send(error);
   }
