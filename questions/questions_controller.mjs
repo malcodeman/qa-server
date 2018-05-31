@@ -86,7 +86,8 @@ export async function findById(req, res, next) {
         {
           model: User
         }
-      ]
+      ],
+      order: [[Answer, "id", "ASC"]]
     });
     res.status(200).send(question[0]);
   } catch (error) {

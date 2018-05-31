@@ -3,6 +3,7 @@ import Sequelize from "sequelize";
 const sequelize = new Sequelize("qa", "root", "toor", {
   host: "localhost",
   dialect: "mysql",
+  //sync: {force: true},
   pool: {
     max: 5,
     min: 0,
