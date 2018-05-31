@@ -5,9 +5,14 @@ import {
   findAll,
   findById,
   updateById,
-  createUpvote,
-  createDownvote
+  createUpvoteQuestion,
+  createDownvoteQuestion
 } from "./questions_controller.mjs";
+
+import {
+  createDownvoteAnswer,
+  createUpvoteAnswer
+} from "../answers/answers_controller.mjs";
 
 import { requireAuthentication } from "../auth/auth_middleware.mjs";
 
@@ -21,8 +26,12 @@ router.get("/", findAll);
 router.get("/:id", findById);
 router.put("/:id", updateById);
 
-// Votes
-router.post("/:id/upvotes", createUpvote);
-router.post("/:id/downvotes", createDownvote);
+// Question votes
+router.post("/:id/upvotes", createUpvoteQuestion);
+router.post("/:id/downvotes", createDownvoteQuestion);
+
+// Answer votes
+router.post("/:id/answers/:id/upvotes", createUpvoteAnswer);
+router.post("/:id/answers/:id/downvotes", createDownvoteAnswer);
 
 export default router;

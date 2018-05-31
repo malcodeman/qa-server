@@ -18,11 +18,13 @@ export async function create(req, res, next) {
   }
 }
 
-export async function createUpvote(req, res, next) {
+export async function createUpvoteQuestion(req, res, next) {
   try {
+    const { questionId } = req.body;
+    const { userId } = req;
     const upvote = await Upvote.create({
-      questionId: req.body.questionId,
-      userId: req.userId
+      questionId,
+      userId
     });
     res.status(200).send(upvote);
   } catch (error) {
@@ -30,11 +32,13 @@ export async function createUpvote(req, res, next) {
   }
 }
 
-export async function createDownvote(req, res, next) {
+export async function createDownvoteQuestion(req, res, next) {
   try {
+    const { questionId } = req.body;
+    const { userId } = req;
     const downvote = await Downvote.create({
-      questionId: req.body.questionId,
-      userId: req.userId
+      questionId,
+      userId
     });
     res.status(200).send(downvote);
   } catch (error) {
@@ -48,7 +52,8 @@ export async function findAll(req, res, next) {
       order: [["id", "DESC"]],
       include: [
         {
-          model: Answer
+          model: Answer,
+          include: [{ model: Upvote }, { model: Downvote }]
         },
         {
           model: Upvote
@@ -75,7 +80,7 @@ export async function findById(req, res, next) {
       include: [
         {
           model: Answer,
-          include: [User]
+          include: [{ model: User }, { model: Upvote }, { model: Downvote }]
         },
         {
           model: Upvote
