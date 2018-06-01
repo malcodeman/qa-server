@@ -17,7 +17,15 @@ export async function signup(req, res, next) {
     const token = jwt.sign({ id: user.id }, "secret", {
       expiresIn: 86400
     });
-    res.status(200).send(token);
+    const newUser = await User.findOne({
+      where: {
+        id: user.dataValues.id
+      },
+      attributes: {
+        exclude: ["password"]
+      }
+    });
+    res.status(200).send({ token, user: newUser });
   } catch (error) {
     res.status(400).send(error);
   }
