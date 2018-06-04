@@ -53,7 +53,6 @@ export async function findAll(req, res, next) {
       include: [
         {
           model: Answer,
-          include: [{ model: Upvote }, { model: Downvote }]
         },
         {
           model: Upvote
