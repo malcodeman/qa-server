@@ -4,7 +4,6 @@ import {
   create,
   findAll,
   findById,
-  updateById,
   createUpvoteQuestion,
   createDownvoteQuestion
 } from "./questions_controller.mjs";
@@ -24,7 +23,6 @@ router.use(requireAuthentication);
 router.post("/", create);
 router.get("/", findAll);
 router.get("/:id", findById);
-router.put("/:id", updateById);
 
 // Question votes
 router.post("/:id/upvotes", createUpvoteQuestion);
