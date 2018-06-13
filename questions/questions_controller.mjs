@@ -65,7 +65,6 @@ export async function findAll(req, res, next) {
       `,
       { type: Sequelize.QueryTypes.SELECT }
     );
-
     res.status(200).send(questions);
   } catch (error) {
     res.status(400).send(error);
@@ -75,25 +74,34 @@ export async function findAll(req, res, next) {
 export async function findById(req, res, next) {
   try {
     const { id } = req.params;
-    const question = await Question.findAll({
-      where: { id },
-      include: [
-        {
-          model: Answer,
-          include: [{ model: User }, { model: Upvote }, { model: Downvote }]
-        },
-        {
-          model: Upvote
-        },
-        {
-          model: Downvote
-        },
-        {
-          model: User
-        }
-      ],
-      order: [[Answer, "id", "ASC"]]
-    });
+    const question = await sequelize.query(
+      `SELECT questions.id, questions.title, questions.body, questions.createdAt,
+      users.username as author,
+      Count(DISTINCT upvotes.id) - Count(DISTINCT downvotes.id) as votes
+      FROM questions
+      LEFT JOIN users ON questions.userId = users.id
+      LEFT JOIN upvotes ON upvotes.questionId = questions.id
+      LEFT JOIN downvotes ON downvotes.questionId = questions.id
+      WHERE questions.id = ${id}
+      GROUP BY questions.id
+      `,
+      { type: Sequelize.QueryTypes.SELECT }
+    );
+    const answers = await sequelize.query(
+      `SELECT answers.id, answers.body, answers.createdAt,
+      Count(DISTINCT upvotes.id) - Count(DISTINCT downvotes.id) as votes
+      FROM questions
+      JOIN answers ON questions.id = answers.questionId
+      LEFT JOIN upvotes ON upvotes.answerId = answers.id
+      LEFT JOIN downvotes ON downvotes.answerId = answers.id
+
+      WHERE questions.id = ${id}
+      GROUP BY answers.id
+
+      `,
+      { type: Sequelize.QueryTypes.SELECT }
+    );
+    question[0].answers = answers;
     res.status(200).send(question[0]);
   } catch (error) {
     res.status(400).send(error);
