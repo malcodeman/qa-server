@@ -1,3 +1,5 @@
+import Sequelize from "sequelize";
+
 import Question from "./questions_model.mjs";
 import Answer from "../answers/answers_model.mjs";
 import Upvote from "../votes/upvotes_model.mjs";
@@ -48,23 +50,21 @@ export async function createDownvoteQuestion(req, res, next) {
 
 export async function findAll(req, res, next) {
   try {
-    const questions = await Question.findAll({
-      order: [["id", "DESC"]],
-      include: [
-        {
-          model: Answer,
-        },
-        {
-          model: Upvote
-        },
-        {
-          model: Downvote
-        },
-        {
-          model: User
-        }
-      ]
-    });
+    const questions = await sequelize.query(
+      `SELECT questions.id, questions.title, questions.createdAt,
+       Count(DISTINCT answers.id) as answersCount,
+       Count(DISTINCT upvotes.id) - Count(DISTINCT downvotes.id) as votes,
+       users.username as author
+      FROM questions 
+      INNER JOIN answers ON answers.questionId = questions.id
+      INNER JOIN upvotes ON upvotes.questionId = questions.id
+      INNER JOIN downvotes ON downvotes.questionId = questions.id
+      INNER JOIN users ON questions.userId = users.id
+      GROUP BY questions.id
+      `,
+      { type: Sequelize.QueryTypes.SELECT }
+    );
+
     res.status(200).send(questions);
   } catch (error) {
     res.status(400).send(error);
