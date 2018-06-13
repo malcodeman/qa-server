@@ -94,27 +94,13 @@ export async function findById(req, res, next) {
       JOIN answers ON questions.id = answers.questionId
       LEFT JOIN upvotes ON upvotes.answerId = answers.id
       LEFT JOIN downvotes ON downvotes.answerId = answers.id
-
       WHERE questions.id = ${id}
       GROUP BY answers.id
-
       `,
       { type: Sequelize.QueryTypes.SELECT }
     );
     question[0].answers = answers;
     res.status(200).send(question[0]);
-  } catch (error) {
-    res.status(400).send(error);
-  }
-}
-// TODO
-export async function updateById(req, res, next) {
-  try {
-    const { id } = req.params;
-    const question = await Question.findById(id);
-    const { num_votes } = question.dataValues;
-    await question.update({ num_votes: num_votes + 1 });
-    res.status(200).send(question);
   } catch (error) {
     res.status(400).send(error);
   }
