@@ -56,11 +56,12 @@ export async function findAll(req, res, next) {
        Count(DISTINCT upvotes.id) - Count(DISTINCT downvotes.id) as votes,
        users.username as author
       FROM questions 
-      INNER JOIN answers ON answers.questionId = questions.id
-      INNER JOIN upvotes ON upvotes.questionId = questions.id
-      INNER JOIN downvotes ON downvotes.questionId = questions.id
-      INNER JOIN users ON questions.userId = users.id
+      LEFT JOIN answers ON answers.questionId = questions.id
+      LEFT JOIN upvotes ON upvotes.questionId = questions.id
+      LEFT JOIN downvotes ON downvotes.questionId = questions.id
+      LEFT JOIN users ON questions.userId = users.id
       GROUP BY questions.id
+      ORDER BY questions.createdAt DESC;
       `,
       { type: Sequelize.QueryTypes.SELECT }
     );
