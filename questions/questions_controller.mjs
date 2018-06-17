@@ -71,6 +71,10 @@ export async function findById(req, res, next) {
         },
         {
           model: Answer
+        },
+        {
+          attributes: ["username"],
+          model: User
         }
       ]
     });
