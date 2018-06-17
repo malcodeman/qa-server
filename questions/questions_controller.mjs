@@ -1,5 +1,3 @@
-import Sequelize from "sequelize";
-
 import Question from "./questions_model.mjs";
 import Answer from "../answers/answers_model.mjs";
 import Upvote from "../upvotes/upvotes_model.mjs";
@@ -14,20 +12,6 @@ export async function create(req, res, next) {
       userId: req.userId
     });
     res.status(200).send(question);
-  } catch (error) {
-    res.status(400).send(error);
-  }
-}
-
-export async function createUpvoteQuestion(req, res, next) {
-  try {
-    const { questionId } = req.body;
-    const { userId } = req;
-    const upvote = await Upvote.create({
-      questionId,
-      userId
-    });
-    res.status(200).send(upvote);
   } catch (error) {
     res.status(400).send(error);
   }
