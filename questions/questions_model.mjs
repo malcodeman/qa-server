@@ -2,8 +2,7 @@ import Sequelize from "sequelize";
 
 import sequelize from "../connection.mjs";
 import Answer from "../answers/answers_model.mjs";
-import Upvote from "../votes/upvotes_model.mjs";
-import Downvote from "../votes/downvotes_model.mjs";
+import Upvote from "../upvotes/upvotes_model.mjs";
 
 const Question = sequelize.define("question", {
   title: {
@@ -24,6 +23,8 @@ const Question = sequelize.define("question", {
 
 Question.hasMany(Answer);
 Question.hasMany(Upvote);
-Question.hasMany(Downvote);
+
+Upvote.belongsTo(Question);
+Answer.belongsTo(Answer);
 
 export default Question;

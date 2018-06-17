@@ -1,7 +1,6 @@
 import Sequelize from "sequelize";
 
-import Upvote from "../votes/upvotes_model.mjs";
-import Downvote from "../votes/downvotes_model.mjs";
+import Upvote from "../upvotes/upvotes_model.mjs";
 import sequelize from "../connection.mjs";
 
 const Answer = sequelize.define("answer", {
@@ -15,6 +14,5 @@ const Answer = sequelize.define("answer", {
 });
 
 Answer.hasMany(Upvote);
-Answer.hasMany(Downvote);
 
 export default Answer;
