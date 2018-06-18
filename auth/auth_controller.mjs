@@ -33,10 +33,12 @@ export async function signup(req, res, next) {
 
 export async function login(req, res, next) {
   try {
-    const { email, username, password } = req.body;
+    const { username, password } = req.body;
+    // Username can be email or username
+    // if either one is correct user can login
     const user = await User.findOne({
       where: {
-        [Op.or]: [{ email }, { username }]
+        [Op.or]: [{ email: username }, { username }]
       }
     });
     if (password === user.password) {
