@@ -100,10 +100,17 @@ export async function findById(req, res, next) {
       });
       return upvotes;
     }
+
     question.dataValues.upvoted = await upvoted(question.dataValues.id);
     question.dataValues.upvotesCount = await upvotesCount(
       question.dataValues.id
     );
+    question.dataValues.owner = await Question.count({
+      where: {
+        id,
+        userId: req.userId
+      }
+    });
     async function upvotesCountAnswers(answerId) {
       const upvotes = await Upvote.count({
         where: {
@@ -133,6 +140,14 @@ export async function findById(req, res, next) {
       question.answers[i].dataValues.upvoted = await upvotedAnswer(
         question.answers[i].dataValues.id
       );
+      let answerId = question.answers[i].dataValues.id;
+      question.answers[i].dataValues.owner = await Answer.count({
+        where: {
+          id: answerId,
+          userId: req.userId,
+          questionId: id
+        }
+      });
     }
     res.status(200).send(question);
   } catch (error) {
