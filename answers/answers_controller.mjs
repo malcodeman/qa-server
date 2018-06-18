@@ -1,3 +1,5 @@
+import sequelize from "sequelize";
+
 import Answer from "./answers_model.mjs";
 import User from "../users/users_model.mjs";
 import Upvote from "../upvotes/upvotes_model.mjs";
@@ -13,8 +15,15 @@ export async function create(req, res, next) {
     const { id } = answer.dataValues;
     res.status(200).send(
       await Answer.find({
+        attributes: [
+          "id",
+          "body",
+          "createdAt",
+          [sequelize.literal(0), "upvotesCount"],
+          [sequelize.literal(false), "upvoted"]
+        ],
         where: { id },
-        include: [{ model: User, attributes: ["username"] }, Upvote]
+        include: [{ model: User, attributes: ["username"] }]
       })
     );
   } catch (error) {

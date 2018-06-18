@@ -53,14 +53,7 @@ export async function findById(req, res, next) {
   try {
     const { id } = req.params;
     const question = await Question.findOne({
-      attributes: [
-        "id",
-        "title",
-        "body",
-        "createdAt",
-        [sequelize.fn("COUNT", sequelize.col("upvotes.id")), "upvotesCount"]
-      ],
-      group: ["question.id", "answers.id"],
+      attributes: ["id", "title", "body", "createdAt"],
       where: {
         id
       },
@@ -70,7 +63,14 @@ export async function findById(req, res, next) {
           attributes: []
         },
         {
-          model: Answer
+          attributes: ["id", "body", "createdAt"],
+          model: Answer,
+          include: [
+            {
+              model: User,
+              attributes: ["username"]
+            }
+          ]
         },
         {
           attributes: ["username"],
@@ -92,9 +92,48 @@ export async function findById(req, res, next) {
         return false;
       }
     }
-
+    async function upvotesCount(questionId) {
+      const upvotes = await Upvote.count({
+        where: {
+          questionId
+        }
+      });
+      return upvotes;
+    }
     question.dataValues.upvoted = await upvoted(question.dataValues.id);
-
+    question.dataValues.upvotesCount = await upvotesCount(
+      question.dataValues.id
+    );
+    async function upvotesCountAnswers(answerId) {
+      const upvotes = await Upvote.count({
+        where: {
+          answerId
+        }
+      });
+      return upvotes;
+    }
+    async function upvotedAnswer(answerId) {
+      const upvote = await Upvote.findOne({
+        attributes: ["id"],
+        where: {
+          answerId,
+          userId: req.userId
+        }
+      });
+      if (upvote) {
+        return Object({ upvoteId: upvote.dataValues.id });
+      } else {
+        return false;
+      }
+    }
+    for (let i = 0; i < question.answers.length; ++i) {
+      question.answers[i].dataValues.upvotesCount = await upvotesCountAnswers(
+        question.answers[i].dataValues.id
+      );
+      question.answers[i].dataValues.upvoted = await upvotedAnswer(
+        question.answers[i].dataValues.id
+      );
+    }
     res.status(200).send(question);
   } catch (error) {
     res.status(400).send(error);

@@ -2,13 +2,21 @@ import Upvote from "./upvotes_model.mjs";
 
 export async function create(req, res, next) {
   try {
-    const { questionId } = req.body;
+    const { questionId, answerId } = req.body;
     const { userId } = req;
-    const upvote = await Upvote.create({
-      questionId,
-      userId
-    });
-    res.status(200).send(upvote);
+    if (questionId) {
+      const upvote = await Upvote.create({
+        questionId,
+        userId
+      });
+      res.status(200).send(upvote);
+    } else if (answerId) {
+      const upvote = await Upvote.create({
+        answerId,
+        userId
+      });
+      res.status(200).send(upvote);
+    }
   } catch (error) {
     res.status(400).send(error);
   }
