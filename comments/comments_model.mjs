@@ -4,7 +4,7 @@ import sequelize from "../connection.mjs";
 
 const Comment = sequelize.define("comment", {
   body: {
-    type: Sequelize.STRING,
+    type: Sequelize.TEXT,
     allowNull: false,
     validate: {
       notEmpty: true
