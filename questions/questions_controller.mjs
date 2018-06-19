@@ -76,6 +76,16 @@ export async function findById(req, res, next) {
             {
               model: User,
               attributes: ["username"]
+            },
+            {
+              model: Comment,
+              attributes: ["id", "body", "createdAt"],
+              include: [
+                {
+                  model: User,
+                  attributes: ["username"]
+                }
+              ]
             }
           ]
         },
