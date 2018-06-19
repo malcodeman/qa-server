@@ -7,25 +7,30 @@ import Upvote from "../upvotes/upvotes_model.mjs";
 export async function create(req, res, next) {
   try {
     const { body, questionId } = req.body;
-    const answer = await Answer.create({
+    let answer = await Answer.create({
       body,
       questionId,
       userId: req.userId
     });
     const { id } = answer.dataValues;
-    res.status(200).send(
-      await Answer.find({
-        attributes: [
-          "id",
-          "body",
-          "createdAt",
-          [sequelize.literal(0), "upvotesCount"],
-          [sequelize.literal(false), "upvoted"]
-        ],
-        where: { id },
-        include: [{ model: User, attributes: ["username"] }]
-      })
-    );
+    answer = await Answer.find({
+      attributes: [
+        "id",
+        "body",
+        "createdAt",
+        [sequelize.literal(0), "upvotesCount"],
+        [sequelize.literal(false), "upvoted"]
+      ],
+      where: { id },
+      include: [{ model: User, attributes: ["username"] }]
+    });
+    answer.dataValues.owner = await Answer.count({
+      where: {
+        id,
+        userId: req.userId
+      }
+    });
+    res.status(200).send(answer);
   } catch (error) {
     res.status(400).send(error);
   }
