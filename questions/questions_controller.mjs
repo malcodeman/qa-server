@@ -2,6 +2,7 @@ import Question from "./questions_model.mjs";
 import Answer from "../answers/answers_model.mjs";
 import Upvote from "../upvotes/upvotes_model.mjs";
 import User from "../users/users_model.mjs";
+import Comment from "../comments/comments_model.mjs";
 import sequelize from "../connection.mjs";
 
 export async function create(req, res, next) {
@@ -59,8 +60,14 @@ export async function findById(req, res, next) {
       },
       include: [
         {
-          model: Upvote,
-          attributes: []
+          attributes: ["id", "body", "createdAt"],
+          model: Comment,
+          include: [
+            {
+              model: User,
+              attributes: ["username"]
+            }
+          ]
         },
         {
           attributes: ["id", "body", "createdAt"],

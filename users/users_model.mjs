@@ -4,6 +4,7 @@ import sequelize from "../connection.mjs";
 import Question from "../questions/questions_model.mjs";
 import Answer from "../answers/answers_model.mjs";
 import Upvote from "../upvotes/upvotes_model.mjs";
+import Comment from "../comments/comments_model.mjs";
 
 const User = sequelize.define("user", {
   email: {
@@ -39,10 +40,13 @@ const User = sequelize.define("user", {
 });
 
 User.hasMany(Question);
-Question.belongsTo(User);
 User.hasMany(Answer);
-Answer.belongsTo(User);
 User.hasMany(Upvote);
+User.hasMany(Comment);
+
+Question.belongsTo(User);
+Answer.belongsTo(User);
 Upvote.belongsTo(User);
+Comment.belongsTo(User);
 
 export default User;
