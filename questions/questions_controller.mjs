@@ -3,7 +3,6 @@ import Answer from "../answers/answers_model.mjs";
 import Upvote from "../upvotes/upvotes_model.mjs";
 import User from "../users/users_model.mjs";
 import Comment from "../comments/comments_model.mjs";
-import sequelize from "../connection.mjs";
 
 export async function create(req, res, next) {
   try {

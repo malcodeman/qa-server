@@ -3,6 +3,7 @@ import sequelize from "sequelize";
 import Answer from "./answers_model.mjs";
 import User from "../users/users_model.mjs";
 import Upvote from "../upvotes/upvotes_model.mjs";
+import Comment from "../comments/comments_model.mjs";
 
 export async function create(req, res, next) {
   try {
@@ -22,7 +23,7 @@ export async function create(req, res, next) {
         [sequelize.literal(false), "upvoted"]
       ],
       where: { id },
-      include: [{ model: User, attributes: ["username"] }]
+      include: [{ model: User, attributes: ["username"] }, { model: Comment }]
     });
     answer.dataValues.owner = await Answer.count({
       where: {
