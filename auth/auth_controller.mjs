@@ -1,22 +1,11 @@
 import jwt from "jsonwebtoken";
-import Sequelize from "sequelize";
 
-import User from "../users/users_model.mjs";
-import { findUser } from "../users/users_controller.mjs";
-
-const Op = Sequelize.Op;
+import { findUser, create } from "../users/users_controller.mjs";
 
 export async function signup(req, res, next) {
   try {
     const { email, name, username, password } = req.body;
-    const nameFirstLetter = name[0];
-    let user = await User.create({
-      email,
-      name,
-      username,
-      password,
-      nameFirstLetter
-    });
+    let user = await create(email, name, username, password);
     const token = jwt.sign({ id: user.id }, "secret", {
       expiresIn: 86400
     });
@@ -46,7 +35,7 @@ export async function logout(req, res, next) {
   try {
     const token = req.headers.authorization;
     const decoded = jwt.verify(token, "secret");
-    const user = await User.findById(decoded.id);
+    const user = await findUser(decoded.id, null);
     res.status(200).send(user);
   } catch (error) {
     res.status(400).send(error);

@@ -1,17 +1,35 @@
+import Sequelize from "sequelize";
+
 import User from "./users_model.mjs";
 import Question from "../questions/questions_model.mjs";
 import Answer from "../answers/answers_model.mjs";
 import Upvote from "../upvotes/upvotes_model.mjs";
 
-import Sequelize from "sequelize";
-
-const Op = Sequelize.Op;
+export async function create(email, name, username, password) {
+  try {
+    const nameFirstLetter = name[0];
+    const user = await User.create({
+      email,
+      name,
+      username,
+      password,
+      nameFirstLetter
+    });
+    return user;
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 export async function findUser(id, username) {
   try {
+    const Op = Sequelize.Op;
     const user = await User.findOne({
       where: {
         [Op.or]: [{ id }, { email: username }, { username }]
+      },
+      attributes: {
+        exclude: ["updatedAt"]
       },
       include: [
         {
@@ -34,20 +52,7 @@ export async function findUser(id, username) {
 export async function findByUsername(req, res, next) {
   try {
     const { username } = req.params;
-    const user = await User.findOne({
-      where: { username },
-      include: [
-        {
-          model: Question
-        },
-        {
-          model: Answer
-        },
-        {
-          model: Upvote
-        }
-      ]
-    });
+    const user = await findUser(null, username);
     res.status(200).send(user);
   } catch (error) {
     res.status(400).send(error);
@@ -66,26 +71,7 @@ export async function findAll(req, res, next) {
 export async function findMe(req, res, next) {
   try {
     const id = req.userId;
-    const me = await User.findOne({
-      where: { id },
-      attributes: {
-        exclude: ["password", "updatedAt"]
-      },
-      include: [
-        {
-          model: Question,
-          attributes: ["id", "createdAt"]
-        },
-        {
-          model: Answer,
-          attributes: ["id", "createdAt"]
-        },
-        {
-          model: Upvote,
-          attributes: ["id", "createdAt"]
-        }
-      ]
-    });
+    const me = await findUser(id, null);
     res.status(200).send(me);
   } catch (error) {
     res.status(400).send(error);
