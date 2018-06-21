@@ -3,11 +3,11 @@ import Question from "../questions/questions_model.mjs";
 import Answer from "../answers/answers_model.mjs";
 import Upvote from "../upvotes/upvotes_model.mjs";
 
-export async function findById(req, res, next) {
+export async function findByUsername(req, res, next) {
   try {
-    const { id } = req.params;
+    const { username } = req.params;
     const user = await User.findOne({
-      where: { id },
+      where: { username },
       include: [
         {
           model: Question
