@@ -38,13 +38,13 @@ export async function findAll(req, res, next) {
 export async function findMe(req, res, next) {
   try {
     const id = req.userId;
-    const me = await User.findAll({
+    const me = await User.findOne({
       where: { id },
       attributes: {
-        exclude: ["password"]
+        exclude: ["password", "updatedAt"]
       }
     });
-    res.status(200).send(me[0]);
+    res.status(200).send(me);
   } catch (error) {
     res.status(400).send(error);
   }

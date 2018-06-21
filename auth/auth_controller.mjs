@@ -8,11 +8,13 @@ const Op = Sequelize.Op;
 export async function signup(req, res, next) {
   try {
     const { email, name, username, password } = req.body;
+    const nameFirstLetter = name[0];
     const user = await User.create({
       email,
       name,
       username,
-      password
+      password,
+      nameFirstLetter
     });
     const token = jwt.sign({ id: user.id }, "secret", {
       expiresIn: 86400
