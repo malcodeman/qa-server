@@ -3,6 +3,34 @@ import Question from "../questions/questions_model.mjs";
 import Answer from "../answers/answers_model.mjs";
 import Upvote from "../upvotes/upvotes_model.mjs";
 
+import Sequelize from "sequelize";
+
+const Op = Sequelize.Op;
+
+export async function findUser(id, username) {
+  try {
+    const user = await User.findOne({
+      where: {
+        [Op.or]: [{ id }, { email: username }, { username }]
+      },
+      include: [
+        {
+          model: Question
+        },
+        {
+          model: Answer
+        },
+        {
+          model: Upvote
+        }
+      ]
+    });
+    return user;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function findByUsername(req, res, next) {
   try {
     const { username } = req.params;
@@ -42,7 +70,21 @@ export async function findMe(req, res, next) {
       where: { id },
       attributes: {
         exclude: ["password", "updatedAt"]
-      }
+      },
+      include: [
+        {
+          model: Question,
+          attributes: ["id", "createdAt"]
+        },
+        {
+          model: Answer,
+          attributes: ["id", "createdAt"]
+        },
+        {
+          model: Upvote,
+          attributes: ["id", "createdAt"]
+        }
+      ]
     });
     res.status(200).send(me);
   } catch (error) {

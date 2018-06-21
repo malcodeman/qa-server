@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import Sequelize from "sequelize";
 
 import User from "../users/users_model.mjs";
+import { findUser } from "../users/users_controller.mjs";
 
 const Op = Sequelize.Op;
 
@@ -9,7 +10,7 @@ export async function signup(req, res, next) {
   try {
     const { email, name, username, password } = req.body;
     const nameFirstLetter = name[0];
-    const user = await User.create({
+    let user = await User.create({
       email,
       name,
       username,
@@ -19,15 +20,8 @@ export async function signup(req, res, next) {
     const token = jwt.sign({ id: user.id }, "secret", {
       expiresIn: 86400
     });
-    const newUser = await User.findOne({
-      where: {
-        id: user.dataValues.id
-      },
-      attributes: {
-        exclude: ["password"]
-      }
-    });
-    res.status(200).send({ token, user: newUser });
+    user = await findUser(null, user.username);
+    res.status(200).send({ token, user });
   } catch (error) {
     res.status(400).send(error);
   }
@@ -36,13 +30,7 @@ export async function signup(req, res, next) {
 export async function login(req, res, next) {
   try {
     const { username, password } = req.body;
-    // Username can be email or username
-    // if either one is correct user can login
-    const user = await User.findOne({
-      where: {
-        [Op.or]: [{ email: username }, { username }]
-      }
-    });
+    const user = await findUser(null, username);
     if (password === user.password) {
       const token = jwt.sign({ id: user.id }, "secret", {
         expiresIn: 86400
