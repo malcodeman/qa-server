@@ -61,7 +61,11 @@ export async function findByUsername(req, res, next) {
 
 export async function findAll(req, res, next) {
   try {
-    const users = await User.findAll();
+    const users = await User.findAll({
+      attributes: {
+        exclude: ["email", "password", "updatedAt"]
+      }
+    });
     res.status(200).send(users);
   } catch (error) {
     res.status(400).send(error);
