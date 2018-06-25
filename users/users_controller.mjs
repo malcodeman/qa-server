@@ -33,7 +33,13 @@ export async function findUser(id, username) {
       },
       include: [
         {
-          model: Question
+          model: Question,
+          include: [
+            {
+              attributes: ["id"],
+              model: Upvote
+            }
+          ]
         },
         {
           model: Answer
