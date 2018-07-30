@@ -87,3 +87,18 @@ export async function findMe(req, res, next) {
     res.status(400).send(error);
   }
 }
+
+export async function updateTheme(req, res, next) {
+  try {
+    const id = req.userId;
+    const { theme } = req.body;
+    if (theme != "light" && theme != "dark") {
+      return res.json({ code: 400, message: "Unexisting theme" });
+    }
+    const me = await findUser(id, null);
+    me.update({ theme });
+    res.status(200).send(me);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+}
