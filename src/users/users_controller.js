@@ -1,9 +1,9 @@
 import Sequelize from "sequelize";
 
-import User from "./users_model.mjs";
-import Question from "../questions/questions_model.mjs";
-import Answer from "../answers/answers_model.mjs";
-import Upvote from "../upvotes/upvotes_model.mjs";
+import User from "./users_model.js";
+import Question from "../questions/questions_model.js";
+import Answer from "../answers/answers_model.js";
+import Upvote from "../upvotes/upvotes_model.js";
 
 export async function create(email, name, username, password) {
   try {
@@ -17,7 +17,7 @@ export async function create(email, name, username, password) {
     });
     return user;
   } catch (error) {
-    console.log(error);
+    res.status(400).send(error);
   }
 }
 
@@ -51,7 +51,7 @@ export async function findUser(id, username) {
     });
     return user;
   } catch (error) {
-    console.log(error);
+    res.status(400).send(error);
   }
 }
 
@@ -96,6 +96,7 @@ export async function updateTheme(req, res, next) {
       return res.json({ code: 400, message: "Unexisting theme" });
     }
     const me = await findUser(id, null);
+
     me.update({ theme });
     res.status(200).send(me);
   } catch (error) {

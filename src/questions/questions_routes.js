@@ -1,10 +1,8 @@
 import express from "express";
 
-import { create, findAll, findById } from "./questions_controller.mjs";
-
-import { createUpvoteAnswer } from "../answers/answers_controller.mjs";
-
-import { requireAuthentication } from "../auth/auth_middleware.mjs";
+import { create, findAll, findById } from "./questions_controller.js";
+import { createUpvoteAnswer } from "../answers/answers_controller.js";
+import { requireAuthentication } from "../auth/auth_middleware.js";
 
 const router = express.Router();
 

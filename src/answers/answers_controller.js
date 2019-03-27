@@ -1,9 +1,9 @@
 import sequelize from "sequelize";
 
-import Answer from "./answers_model.mjs";
-import User from "../users/users_model.mjs";
-import Upvote from "../upvotes/upvotes_model.mjs";
-import Comment from "../comments/comments_model.mjs";
+import Answer from "./answers_model.js";
+import User from "../users/users_model.js";
+import Upvote from "../upvotes/upvotes_model.js";
+import Comment from "../comments/comments_model.js";
 
 export async function create(req, res, next) {
   try {

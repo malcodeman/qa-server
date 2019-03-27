@@ -1,14 +1,14 @@
 import express from "express";
 import cors from "cors";
 
-import auth_routes from "./auth/auth_routes.mjs";
-import users_routes from "./users/users_routes.mjs";
-import questions_routes from "./questions/questions_routes.mjs";
-import answers_routes from "./answers/answers_routes.mjs";
-import upvotes_routes from "./upvotes/upvotes_routes.mjs";
-import comments_routes from "./comments/comments_routes.mjs";
+import auth_routes from "./auth/auth_routes.js";
+import users_routes from "./users/users_routes.js";
+import questions_routes from "./questions/questions_routes.js";
+import answers_routes from "./answers/answers_routes.js";
+import upvotes_routes from "./upvotes/upvotes_routes.js";
+import comments_routes from "./comments/comments_routes.js";
 
-const PORT = process.env.PORT || 9001;
+const PORT = process.env.PORT;
 const app = express();
 
 app.use(cors());

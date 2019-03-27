@@ -1,7 +1,7 @@
 import express from "express";
 
-import { create } from "./comments_controller.mjs";
-import { requireAuthentication } from "../auth/auth_middleware.mjs";
+import { create } from "./comments_controller";
+import { requireAuthentication } from "../auth/auth_middleware.js";
 
 const router = express.Router();
 

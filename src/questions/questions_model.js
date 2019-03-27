@@ -1,9 +1,9 @@
 import Sequelize from "sequelize";
 
-import sequelize from "../connection.mjs";
-import Answer from "../answers/answers_model.mjs";
-import Upvote from "../upvotes/upvotes_model.mjs";
-import Comment from "../comments/comments_model.mjs";
+import sequelize from "../connection.js";
+import Answer from "../answers/answers_model.js";
+import Upvote from "../upvotes/upvotes_model.js";
+import Comment from "../comments/comments_model.js";
 
 const Question = sequelize.define("question", {
   title: {

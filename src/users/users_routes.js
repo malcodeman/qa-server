@@ -5,8 +5,8 @@ import {
   findAll,
   findMe,
   updateTheme
-} from "./users_controller.mjs";
-import { requireAuthentication } from "../auth/auth_middleware.mjs";
+} from "./users_controller.js";
+import { requireAuthentication } from "../auth/auth_middleware.js";
 
 const router = express.Router();
 

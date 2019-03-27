@@ -1,8 +1,8 @@
 import Sequelize from "sequelize";
 
-import Upvote from "../upvotes/upvotes_model.mjs";
-import sequelize from "../connection.mjs";
-import Comment from "../comments/comments_model.mjs";
+import Upvote from "../upvotes/upvotes_model.js";
+import sequelize from "../connection.js";
+import Comment from "../comments/comments_model.js";
 
 const Answer = sequelize.define("answer", {
   body: {

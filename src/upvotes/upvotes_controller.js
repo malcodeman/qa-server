@@ -1,4 +1,4 @@
-import Upvote from "./upvotes_model.mjs";
+import Upvote from "./upvotes_model.js";
 
 export async function create(req, res, next) {
   try {

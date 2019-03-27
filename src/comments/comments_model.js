@@ -1,6 +1,6 @@
 import Sequelize from "sequelize";
 
-import sequelize from "../connection.mjs";
+import sequelize from "../connection.js";
 
 const Comment = sequelize.define("comment", {
   body: {
