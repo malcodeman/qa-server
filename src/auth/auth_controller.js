@@ -30,14 +30,3 @@ export async function login(req, res, next) {
     res.status(400).send(error);
   }
 }
-
-export async function logout(req, res, next) {
-  try {
-    const token = req.headers.authorization;
-    const decoded = jwt.verify(token, "secret");
-    const user = await findUser(decoded.id, null);
-    res.status(200).send(user);
-  } catch (error) {
-    res.status(400).send(error);
-  }
-}
