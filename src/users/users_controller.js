@@ -17,7 +17,7 @@ export async function create(email, name, username, password) {
     });
     return user;
   } catch (error) {
-    res.status(400).send(error);
+    return error;
   }
 }
 
@@ -51,7 +51,7 @@ export async function findUser(id, username) {
     });
     return user;
   } catch (error) {
-    res.status(400).send(error);
+    return error;
   }
 }
 
