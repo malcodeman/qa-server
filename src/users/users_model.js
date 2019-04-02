@@ -47,14 +47,6 @@ const User = sequelize.define("user", {
   profilePhotoURL: {
     type: Sequelize.STRING,
     defaultValue: null
-  },
-  theme: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    defaultValue: "light",
-    validate: {
-      notEmpty: true
-    }
   }
 });
 
