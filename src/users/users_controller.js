@@ -59,6 +59,11 @@ export async function findByUsername(req, res, next) {
   try {
     const { username } = req.params;
     const user = await findUser(null, username);
+
+    if (!user) {
+      res.status(400).send({ exception: "UserNotFoundException" });
+      return;
+    }
     res.status(200).send(user);
   } catch (error) {
     res.status(400).send(error);

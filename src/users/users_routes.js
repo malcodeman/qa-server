@@ -10,11 +10,9 @@ import { requireAuthentication } from "../auth/auth_middleware.js";
 
 const router = express.Router();
 
-router.use(requireAuthentication);
-
-router.get("/me", findMe);
+router.get("/me", requireAuthentication, findMe);
 router.get("/:username", findByUsername);
-router.get("/", findAll);
-router.put("/theme", updateTheme);
+router.get("/", requireAuthentication, findAll);
+router.put("/theme", requireAuthentication, updateTheme);
 
 export default router;
