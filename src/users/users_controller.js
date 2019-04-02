@@ -15,9 +15,10 @@ export async function create(email, name, username, password) {
       password,
       nameFirstLetter
     });
+
     return user;
   } catch (error) {
-    return error;
+    throw error;
   }
 }
 
@@ -51,7 +52,7 @@ export async function findUser(id, username) {
     });
     return user;
   } catch (error) {
-    return error;
+    throw error;
   }
 }
 
