@@ -5,6 +5,23 @@ import User from "../users/users_model.js";
 import Upvote from "../upvotes/upvotes_model.js";
 import Comment from "../comments/comments_model.js";
 
+async function findAnswer(id) {
+  const answer = await Answer.findOne({
+    where: {
+      id
+    },
+    include: [
+      {
+        model: User,
+        attributes: ["username", "profilePhotoURL"]
+      },
+      { model: Comment }
+    ]
+  });
+
+  return answer;
+}
+
 export async function create(req, res, next) {
   try {
     const { body, questionId } = req.body;
@@ -13,8 +30,9 @@ export async function create(req, res, next) {
       questionId,
       userId: req.userId
     });
+    const { id } = answer.dataValues;
 
-    res.status(200).send(answer);
+    res.status(200).send(await findAnswer(id));
   } catch (error) {
     res.status(400).send(error);
   }
