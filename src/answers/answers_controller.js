@@ -8,29 +8,12 @@ import Comment from "../comments/comments_model.js";
 export async function create(req, res, next) {
   try {
     const { body, questionId } = req.body;
-    let answer = await Answer.create({
+    const answer = await Answer.create({
       body,
       questionId,
       userId: req.userId
     });
-    const { id } = answer.dataValues;
-    answer = await Answer.find({
-      attributes: [
-        "id",
-        "body",
-        "createdAt",
-        [sequelize.literal(0), "upvotesCount"],
-        [sequelize.literal(false), "upvoted"]
-      ],
-      where: { id },
-      include: [{ model: User, attributes: ["username"] }, { model: Comment }]
-    });
-    answer.dataValues.owner = await Answer.count({
-      where: {
-        id,
-        userId: req.userId
-      }
-    });
+
     res.status(200).send(answer);
   } catch (error) {
     res.status(400).send(error);
@@ -40,6 +23,7 @@ export async function create(req, res, next) {
 export async function findAll(req, res, next) {
   try {
     const answers = await Answer.findAll();
+
     res.status(200).send(answers);
   } catch (error) {
     res.status(400).send(error);
@@ -54,6 +38,7 @@ export async function createUpvoteAnswer(req, res, next) {
       answerId,
       userId
     });
+
     res.status(200).send(upvote);
   } catch (error) {
     res.status(400).send(error);
