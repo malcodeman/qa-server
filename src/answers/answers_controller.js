@@ -18,6 +18,8 @@ async function findAnswer(id) {
       { model: Comment }
     ]
   });
+  answer.dataValues.upvoted = null;
+  answer.dataValues.upvotesCount = 0;
 
   return answer;
 }
@@ -33,31 +35,6 @@ export async function create(req, res, next) {
     const { id } = answer.dataValues;
 
     res.status(200).send(await findAnswer(id));
-  } catch (error) {
-    res.status(400).send(error);
-  }
-}
-
-export async function findAll(req, res, next) {
-  try {
-    const answers = await Answer.findAll();
-
-    res.status(200).send(answers);
-  } catch (error) {
-    res.status(400).send(error);
-  }
-}
-
-export async function createUpvoteAnswer(req, res, next) {
-  try {
-    const { questionId, answerId } = req.body;
-    const { userId } = req;
-    const upvote = await Upvote.create({
-      answerId,
-      userId
-    });
-
-    res.status(200).send(upvote);
   } catch (error) {
     res.status(400).send(error);
   }
