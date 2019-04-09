@@ -2,7 +2,6 @@ import sequelize from "sequelize";
 
 import Answer from "./answers_model.js";
 import User from "../users/users_model.js";
-import Upvote from "../upvotes/upvotes_model.js";
 import Comment from "../comments/comments_model.js";
 
 async function findAnswer(id) {

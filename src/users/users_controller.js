@@ -50,6 +50,7 @@ export async function findUser(id, username) {
         }
       ]
     });
+
     return user;
   } catch (error) {
     throw error;
@@ -78,6 +79,7 @@ export async function findAll(req, res, next) {
         exclude: ["email", "password", "updatedAt"]
       }
     });
+
     res.status(200).send(users);
   } catch (error) {
     res.status(400).send(error);
@@ -88,6 +90,7 @@ export async function findMe(req, res, next) {
   try {
     const id = req.userId;
     const me = await findUser(id, null);
+
     res.status(200).send(me);
   } catch (error) {
     res.status(400).send(error);

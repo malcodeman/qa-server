@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-import { findUser, create } from "../users/users_controller.js";
+import { create, findUser } from "../users/users_controller.js";
 
 export async function signup(req, res, next) {
   try {

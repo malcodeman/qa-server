@@ -17,10 +17,10 @@ app.use(
   })
 );
 app.use(express.json());
-app.use("/api/v1/auth", auth_routes);
-app.use("/api/v1/users", users_routes);
-app.use("/api/v1/questions", questions_routes);
-app.use("/api/v1/answers", answers_routes);
-app.use("/api/v1/upvotes", upvotes_routes);
+app.use("/api/auth", auth_routes);
+app.use("/api/users", users_routes);
+app.use("/api/questions", questions_routes);
+app.use("/api/answers", answers_routes);
+app.use("/api/upvotes", upvotes_routes);
 
 app.listen(PORT, () => console.log(`Running on port ${PORT}`));

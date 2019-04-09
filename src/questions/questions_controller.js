@@ -11,6 +11,7 @@ export async function create(req, res, next) {
       body: req.body.body,
       userId: req.userId
     });
+
     res.status(200).send(question);
   } catch (error) {
     res.status(400).send(error);

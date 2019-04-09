@@ -1,7 +1,7 @@
 import Sequelize from "sequelize";
 
-import Upvote from "../upvotes/upvotes_model.js";
 import sequelize from "../connection.js";
+import Upvote from "../upvotes/upvotes_model.js";
 import Comment from "../comments/comments_model.js";
 
 const Answer = sequelize.define("answer", {

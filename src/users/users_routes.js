@@ -1,7 +1,7 @@
 import express from "express";
 
-import { findByUsername, findAll, findMe } from "./users_controller.js";
 import { requireAuthentication } from "../auth/auth_middleware.js";
+import { findMe, findByUsername, findAll } from "./users_controller.js";
 
 const router = express.Router();
 

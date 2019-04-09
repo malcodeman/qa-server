@@ -1,5 +1,5 @@
 import sequelize from "../connection";
 
-const Upvote = sequelize.define("upvote", {});
+const Upvote = sequelize.define("upvote");
 
 export default Upvote;
