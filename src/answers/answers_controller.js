@@ -12,7 +12,7 @@ async function findAnswer(id) {
     include: [
       {
         model: User,
-        attributes: ["username", "profilePhotoURL"]
+        attributes: ["username", "profilePhotoURL", "nameFirstLetter"]
       },
       { model: Comment }
     ]

@@ -75,7 +75,7 @@ export async function findById(req, res, next) {
           include: [
             {
               model: User,
-              attributes: ["username", "profilePhotoURL"]
+              attributes: ["username", "profilePhotoURL", "nameFirstLetter"]
             },
             {
               model: Comment,
@@ -90,7 +90,7 @@ export async function findById(req, res, next) {
           ]
         },
         {
-          attributes: ["username", "profilePhotoURL"],
+          attributes: ["username", "profilePhotoURL", "nameFirstLetter"],
           model: User
         }
       ]
