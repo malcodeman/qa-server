@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+import { Op } from "sequelize";
 
 import User from "./users_model.js";
 import Question from "../questions/questions_model.js";
@@ -24,10 +24,10 @@ export async function create(email, name, username, password) {
 
 export async function findUser(id, username) {
   try {
-    const Op = Sequelize.Op;
+    const Operator = Op;
     const user = await User.findOne({
       where: {
-        [Op.or]: [{ id }, { email: username }, { username }]
+        [Operator.or]: [{ id }, { email: username }, { username }]
       },
       attributes: {
         exclude: ["updatedAt"]

@@ -1,5 +1,3 @@
-import sequelize from "sequelize";
-
 import Answer from "./answers_model.js";
 import User from "../users/users_model.js";
 import Comment from "../comments/comments_model.js";

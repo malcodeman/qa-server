@@ -1,10 +1,10 @@
-import Sequelize from "sequelize";
+import { TEXT } from "sequelize";
 
 import sequelize from "../connection.js";
 
 const Comment = sequelize.define("comment", {
   body: {
-    type: Sequelize.TEXT,
+    type: TEXT,
     allowNull: false,
     validate: {
       notEmpty: true

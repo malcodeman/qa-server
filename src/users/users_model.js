@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+import { STRING } from "sequelize";
 
 import sequelize from "../connection.js";
 import Question from "../questions/questions_model.js";
@@ -8,7 +8,7 @@ import Comment from "../comments/comments_model.js";
 
 const User = sequelize.define("user", {
   email: {
-    type: Sequelize.STRING,
+    type: STRING,
     unique: true,
     allowNull: false,
     validate: {
@@ -16,14 +16,14 @@ const User = sequelize.define("user", {
     }
   },
   name: {
-    type: Sequelize.STRING,
+    type: STRING,
     allowNull: false,
     validate: {
       notEmpty: true
     }
   },
   username: {
-    type: Sequelize.STRING,
+    type: STRING,
     unique: true,
     allowNull: false,
     validate: {
@@ -31,21 +31,21 @@ const User = sequelize.define("user", {
     }
   },
   password: {
-    type: Sequelize.STRING,
+    type: STRING,
     allowNull: false,
     validate: {
       notEmpty: true
     }
   },
   nameFirstLetter: {
-    type: Sequelize.STRING,
+    type: STRING,
     allowNull: false,
     validate: {
       notEmpty: true
     }
   },
   profilePhotoURL: {
-    type: Sequelize.STRING,
+    type: STRING,
     defaultValue: null
   }
 });

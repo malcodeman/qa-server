@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+import { STRING, TEXT } from "sequelize";
 
 import sequelize from "../connection.js";
 import Answer from "../answers/answers_model.js";
@@ -7,14 +7,14 @@ import Comment from "../comments/comments_model.js";
 
 const Question = sequelize.define("question", {
   title: {
-    type: Sequelize.STRING,
+    type: STRING,
     allowNull: false,
     validate: {
       notEmpty: true
     }
   },
   body: {
-    type: Sequelize.TEXT,
+    type: TEXT,
     allowNull: false,
     validate: {
       notEmpty: true
