@@ -1,3 +1,5 @@
+import sequelize from "../connection.js";
+
 import Question from "./questions_model.js";
 import Answer from "../answers/answers_model.js";
 import Upvote from "../upvotes/upvotes_model.js";
@@ -20,30 +22,19 @@ export async function create(req, res, next) {
 
 export async function findAll(req, res, next) {
   try {
-    const questions = await Question.findAll({
-      attributes: ["id", "title", "createdAt"],
-      order: [["createdAt", "DESC"]],
-      include: [
-        {
-          attributes: ["id", "username"],
-          model: User
-        }
-      ]
-    });
-    async function upvotes(questionId) {
-      return await Upvote.count({ where: { questionId } });
-    }
-    async function answers(questionId) {
-      return await Answer.count({ where: { questionId } });
-    }
-    for (let i = 0; i < questions.length; ++i) {
-      questions[i].dataValues.upvotesCount = await upvotes(
-        questions[i].dataValues.id
-      );
-      questions[i].dataValues.answersCount = await answers(
-        questions[i].dataValues.id
-      );
-    }
+    const questions = await sequelize.query(
+      `
+    SELECT questions.id, questions.createdAt, questions.title, users.username as author,
+    (SELECT COUNT(upvotes.id) FROM upvotes WHERE upvotes.questionId = questions.id) as upvotesCount,
+    (SELECT COUNT(answers.id) FROM answers WHERE answers.questionId = questions.id) as answersCount
+    FROM questions
+    INNER JOIN users ON users.id = questions.userId
+    ORDER BY questions.createdAt DESC;`,
+      {
+        type: sequelize.QueryTypes.SELECT
+      }
+    );
+
     res.status(200).send(questions);
   } catch (error) {
     res.status(400).send(error);
