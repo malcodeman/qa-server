@@ -1,11 +1,26 @@
 import Upvote from "./upvotes_model.js";
 
-export async function destroy(req, res, next) {
+export async function upvoteAnswer(req, res, next) {
+  try {
+    const { id } = req.params;
+    const upvote = await Upvote.create({
+      answerId: Number(id),
+      userId: req.userId
+    });
+
+    res.status(200).send(upvote);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+}
+
+export async function downvoteAnswer(req, res, next) {
   try {
     const { id } = req.params;
     const upvote = await Upvote.findOne({
       where: {
-        id
+        answerId: Number(id),
+        userId: req.userId
       }
     });
 
@@ -16,12 +31,12 @@ export async function destroy(req, res, next) {
   }
 }
 
-export async function upvoteAnswer(req, res, next) {
+export async function upvoteQuestion(req, res, next) {
   try {
     const { id } = req.params;
     const upvote = await Upvote.create({
-      userId: req.userId,
-      answerId: Number(id)
+      questionId: Number(id),
+      userId: req.userId
     });
 
     res.status(200).send(upvote);
@@ -30,14 +45,17 @@ export async function upvoteAnswer(req, res, next) {
   }
 }
 
-export async function upvoteQuestion(req, res, next) {
+export async function downvoteQuestion(req, res, next) {
   try {
     const { id } = req.params;
-    const upvote = await Upvote.create({
-      userId: req.userId,
-      questionId: Number(id)
+    const upvote = await Upvote.findOne({
+      where: {
+        questionId: Number(id),
+        userId: req.userId
+      }
     });
 
+    await upvote.destroy();
     res.status(200).send(upvote);
   } catch (error) {
     res.status(400).send(error);

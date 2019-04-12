@@ -3,7 +3,10 @@ import express from "express";
 import { requireAuthentication } from "../auth/auth_middleware.js";
 import { create, findAll, findById } from "./questions_controller.js";
 import { createQuestionComment } from "../comments/comments_controller";
-import { upvoteQuestion } from "../upvotes/upvotes_controller";
+import {
+  upvoteQuestion,
+  downvoteQuestion
+} from "../upvotes/upvotes_controller";
 
 const router = express.Router();
 
@@ -13,5 +16,6 @@ router.get("/", findAll);
 router.get("/:id", findById);
 router.post("/:id/comments", createQuestionComment);
 router.post("/:id/upvotes", upvoteQuestion);
+router.delete("/:id/upvotes", downvoteQuestion);
 
 export default router;
