@@ -1,21 +1,6 @@
 import Comment from "./comments_model.js";
-import User from "../users/users_model.js";
 
-async function findComment(id) {
-  const comment = await Comment.findOne({
-    where: {
-      id
-    },
-    include: [
-      {
-        model: User,
-        attributes: ["username"]
-      }
-    ]
-  });
-
-  return comment;
-}
+import { findComment } from "./comments_helpers";
 
 export async function createQuestionComment(req, res, next) {
   try {
@@ -25,9 +10,8 @@ export async function createQuestionComment(req, res, next) {
       questionId,
       body
     });
-    const { id } = comment.dataValues;
 
-    res.status(200).send(await findComment(id));
+    res.status(200).send(await findComment(comment.id));
   } catch (error) {
     res.status(400).send(error);
   }
@@ -41,9 +25,8 @@ export async function createAnswerComment(req, res, next) {
       answerId,
       body
     });
-    const { id } = comment.dataValues;
 
-    res.status(200).send(await findComment(id));
+    res.status(200).send(await findComment(comment.id));
   } catch (error) {
     res.status(400).send(error);
   }

@@ -1,7 +1,13 @@
 import jwt from "jsonwebtoken";
 import argon from "argon2";
 
-import { create, findUser } from "../users/users_controller.js";
+import {
+  create,
+  findOnLogin,
+  findByEmail,
+  findByUsername,
+  findMe
+} from "../users/users_helpers";
 
 export async function signup(req, res, next) {
   try {
@@ -11,8 +17,9 @@ export async function signup(req, res, next) {
     const token = jwt.sign({ id: user.id }, "secret", {
       expiresIn: 86400
     });
+    const me = await findMe(user.id);
 
-    res.status(200).send({ token, user });
+    res.status(200).send({ token, user: me });
   } catch (error) {
     if (error.errors) {
       const notUnique = error.errors.find(error => {
@@ -33,7 +40,7 @@ export async function signup(req, res, next) {
 export async function login(req, res, next) {
   try {
     const { username, password } = req.body;
-    const user = await findUser(null, username);
+    const user = await findOnLogin(username);
 
     if (!user) {
       res.status(400).send({ exception: "UserNotFoundException" });
@@ -43,10 +50,41 @@ export async function login(req, res, next) {
       const token = jwt.sign({ id: user.id }, "secret", {
         expiresIn: 86400
       });
+      const me = await findMe(user.id);
 
-      res.status(200).send({ token, user });
+      res.status(200).send({ token, user: me });
     } else {
       res.status(401).send({ exception: "NotAuthorizedException" });
+    }
+  } catch (error) {
+    res.status(400).send({ exception: "general", error });
+  }
+}
+
+export async function validateEmail(req, res, next) {
+  try {
+    const { email } = req.body;
+    const user = await findByEmail(email);
+
+    if (user) {
+      res.status(200).send({ exists: true });
+    } else {
+      res.status(200).send({ exists: false });
+    }
+  } catch (error) {
+    res.status(400).send({ exception: "general", error });
+  }
+}
+
+export async function validateUsername(req, res, next) {
+  try {
+    const { username } = req.body;
+    const user = await findByUsername(username);
+
+    if (user) {
+      res.status(200).send({ exists: true });
+    } else {
+      res.status(200).send({ exists: false });
     }
   } catch (error) {
     res.status(400).send({ exception: "general", error });

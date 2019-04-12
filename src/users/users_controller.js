@@ -1,36 +1,18 @@
-import { Op } from "sequelize";
-
 import User from "./users_model.js";
 import Question from "../questions/questions_model.js";
 import Answer from "../answers/answers_model.js";
 import Upvote from "../upvotes/upvotes_model.js";
+import helpers from "./users_helpers";
 
-export async function create(email, name, username, password) {
+export async function findByUsername(req, res, next) {
   try {
-    const nameFirstLetter = name[0];
-    const user = await User.create({
-      email,
-      name,
-      username,
-      password,
-      nameFirstLetter
-    });
-
-    return user;
-  } catch (error) {
-    throw error;
-  }
-}
-
-export async function findUser(id, username) {
-  try {
-    const Operator = Op;
+    const { username } = req.params;
     const user = await User.findOne({
       where: {
-        [Operator.or]: [{ id }, { email: username }, { username }]
+        username
       },
       attributes: {
-        exclude: ["updatedAt"]
+        exclude: ["email", "password", "updatedAt"]
       },
       include: [
         {
@@ -50,18 +32,6 @@ export async function findUser(id, username) {
         }
       ]
     });
-
-    return user;
-  } catch (error) {
-    throw error;
-  }
-}
-
-export async function findByUsername(req, res, next) {
-  try {
-    const { username } = req.params;
-    const user = await findUser(null, username);
-
     if (!user) {
       res.status(400).send({ exception: "UserNotFoundException" });
       return;
@@ -89,7 +59,7 @@ export async function findAll(req, res, next) {
 export async function findMe(req, res, next) {
   try {
     const id = req.userId;
-    const me = await findUser(id, null);
+    const me = await helpers.findMe(id);
 
     res.status(200).send(me);
   } catch (error) {

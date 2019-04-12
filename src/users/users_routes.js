@@ -5,8 +5,9 @@ import { findMe, findByUsername, findAll } from "./users_controller.js";
 
 const router = express.Router();
 
-router.get("/me", requireAuthentication, findMe);
+router.use(requireAuthentication);
+router.get("/me", findMe);
 router.get("/:username", findByUsername);
-router.get("/", requireAuthentication, findAll);
+router.get("/", findAll);
 
 export default router;
