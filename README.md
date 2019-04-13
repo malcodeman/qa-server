@@ -14,6 +14,7 @@ PORT=9001
 DB_NAME = "qa"
 DB_USERNAME = "root"
 DB_PASSWORD = "toor"
+DB_HOST = "localhost"
 ```
 
 To start the service run:
